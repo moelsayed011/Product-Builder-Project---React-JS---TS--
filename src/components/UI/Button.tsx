@@ -7,7 +7,6 @@ className?: string;
 
 
 export const Button = ({children ,className, ...rest } : IProps) => {
-    console.log(rest)
     
     return<>
 

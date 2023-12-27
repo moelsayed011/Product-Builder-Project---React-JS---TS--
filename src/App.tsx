@@ -1,6 +1,6 @@
 
 // import './App.css'
-import { ChangeEvent, useState } from 'react'
+import { ChangeEvent, FormEvent, useState } from 'react'
 import { ProductCard } from './components/ProductCard/ProductCard'
 import Modal from './components/UI/Modal'
 import { formInputsList, productList } from './components/data'
@@ -10,21 +10,24 @@ import { IProduct } from './components/interfaces'
 
 function App() {
   /* ------- STATE MODAL ------- */
-  const [product,setProduct] =useState <IProduct>({
-    title:'',
-    description:'',
-    imageURL:'',
-    price:'',
+  const defaultProductObj = {
+    title: '',
+    description: '',
+    imageURL: '',
+    price: '',
     colors: [],
-    category:{
-      name:'',
-      imageURL:''
+    category: {
+      name: '',
+      imageURL: ''
     }
-  })
+
+}
+
+  const [product,setProduct] =useState <IProduct>(defaultProductObj)
 
 
 
-  const [isOpen, setIsOpen] = useState(true)
+  const [isOpen, setIsOpen] = useState(false)
 
 
   /* ------- HANDEL MODAL ------- */
@@ -44,6 +47,18 @@ function App() {
     })
   }
 
+
+
+  const onSubmitHandler = (e: FormEvent<HTMLFormElement> )=>{
+    e.preventDefault()
+    console.log(product)
+  }
+
+  const onCancel =()=>{
+    console.log("Close")
+    setProduct(defaultProductObj)
+    closeModal()
+  }
 
   /* ------- RENDER ------- */
 
@@ -76,12 +91,12 @@ function App() {
 
       <Modal isOpen={isOpen} closeModal={closeModal} title='Create New Product'>
 
-        <form className='space-y-3'>
+        <form className='space-y-3' onSubmit={onSubmitHandler}>
 
           {renderFormInputsList}
             <div  className='flex items-center space-x-3'>
-            <Button className=' bg-indigo-700' >Submit</Button>
-            <Button className=' bg-gray-500'>Cancel</Button>
+            <Button className=' bg-indigo-700'  >Submit</Button>
+            <Button className=' bg-gray-500'  onClick={onCancel}>Cancel</Button>
             </div>
 
         </form>
