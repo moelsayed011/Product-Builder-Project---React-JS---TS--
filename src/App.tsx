@@ -54,7 +54,7 @@ function App() {
   const renderFormInputsList = formInputsList.map(input => (
     <div className='flex flex-col'>
       <label htmlFor={input.id} className='text-gray-700 mb-[1px] text-sm font-medium'>{input.label}</label>
-      <Input type={input.type} name={input.name} id={input.id} value={''} onChange={onChangeHandeler}/>
+      <Input type={input.type} name={input.name} id={input.id} value={product[input.name]} onChange={onChangeHandeler}/>
     </div>
   ))
 
