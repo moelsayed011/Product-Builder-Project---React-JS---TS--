@@ -7,6 +7,8 @@ import { formInputsList, productList } from './components/data'
 import { Button } from './components/UI/Button'
 import { Input } from './components/UI/Input'
 import { IProduct } from './components/interfaces'
+import { productValidation } from './validation'
+
 
 function App() {
   /* ------- STATE MODAL ------- */
@@ -51,7 +53,28 @@ function App() {
 
   const onSubmitHandler = (e: FormEvent<HTMLFormElement> )=>{
     e.preventDefault()
-    console.log(product)
+    // console.log(product)
+    const {title , description , price , imageURL} = product
+
+    const errors = productValidation({
+      title,
+      description,
+      imageURL,
+      price
+    })
+    // console.log(errors)
+
+
+
+    // return true or false 
+    //this line check input 
+    const handelErrors = Object.values(errors).some(value => value == '') && Object.values(errors).every(value => value == '') 
+    // console.log(handelErrors)
+
+
+    if(!handelErrors) return;
+
+    console.log("Data Aready Sending.....")
   }
 
   const onCancel =()=>{
