@@ -8,6 +8,7 @@ import { Button } from './components/UI/Button'
 import { Input } from './components/UI/Input'
 import { IProduct } from './components/interfaces'
 import { productValidation } from './validation'
+import { ErroeMsg } from './components/UI/ErroeMsg'
 
 
 function App() {
@@ -24,6 +25,10 @@ function App() {
     }
 
 }
+
+
+  const [errors, setErrors] = useState({ title: "", description: '', imageURL: '', price: '', })
+  console.log(errors)
 
   const [product,setProduct] =useState <IProduct>(defaultProductObj)
 
@@ -47,6 +52,11 @@ function App() {
       ...product,
       [name] : value,
     })
+
+    setErrors({
+      ...errors,
+      [name]:"",
+    })
   }
 
 
@@ -55,7 +65,6 @@ function App() {
     e.preventDefault()
     // console.log(product)
     const {title , description , price , imageURL} = product
-
     const errors = productValidation({
       title,
       description,
@@ -72,7 +81,10 @@ function App() {
     // console.log(handelErrors)
 
 
-    if(!handelErrors) return;
+    if(!handelErrors){
+      setErrors(errors)
+      return;
+    } 
 
     console.log("Data Aready Sending.....")
   }
@@ -93,6 +105,7 @@ function App() {
     <div className='flex flex-col'>
       <label htmlFor={input.id} className='text-gray-700 mb-[1px] text-sm font-medium'>{input.label}</label>
       <Input type={input.type} name={input.name} id={input.id} value={product[input.name]} onChange={onChangeHandeler}/>
+      <ErroeMsg msg={errors[input.name]}/>
     </div>
   ))
 
@@ -101,8 +114,6 @@ function App() {
 
 
     <main className='container mx-auto'>
-
-     
         <Button className=' bg-indigo-700 w-full' onClick={openModal}>add</Button>
     
 
@@ -119,7 +130,7 @@ function App() {
           {renderFormInputsList}
             <div  className='flex items-center space-x-3'>
             <Button className=' bg-indigo-700'  >Submit</Button>
-            <Button className=' bg-gray-500'  onClick={onCancel}>Cancel</Button>
+            <Button className=' bg-gray-500' onClick={onCancel}>Cancel</Button>
             </div>
 
         </form>
