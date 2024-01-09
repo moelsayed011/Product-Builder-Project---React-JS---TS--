@@ -2,6 +2,8 @@
 import { textSlice } from '../../utils/functin';
 import { Image } from '../Image/Image'
 import { Button } from '../UI/Button'
+import { CircleColor } from '../UI/CircleColor';
+// import { CircleColor } from '../UI/CircleColor';
 import { IProduct } from '../interfaces'
 interface IProps {
 product : IProduct;
@@ -9,7 +11,12 @@ product : IProduct;
 
 
 export const ProductCard = ({product}:IProps) => {
-    const {description,title,imageURL,price} = product
+    const { description, title, imageURL, price, colors } = product
+
+    const productCircleColor = colors.map((color) => <CircleColor key={color} color={color}/>)
+
+
+
     return<>
         <div className="max-w-sm md:max-w-lg mx-auto md:mx-0 border rounded-md p-2 flex flex-col space-y-3" >
             <Image imageURL={imageURL} alt={'product name'} className="rounded-md mb-2" />
@@ -17,10 +24,8 @@ export const ProductCard = ({product}:IProps) => {
             <p>
                 {textSlice(description)}
             </p> 
-            <div className='flex items-center space-x-2'>
-                    <span className='w-5 h-5 bg-indigo-600 rounded-full cursor-pointer'/>
-                    <span className='w-5 h-5 bg-red-600 rounded-full cursor-pointer '/>
-                    <span className='w-5 h-5 bg-yellow-600 rounded-full cursor-pointer '/>
+            <div className='flex space-x-2 items-center' >
+                {productCircleColor}
             </div>
             <div  className='flex justify-between items-center'>
                 <span>${price}</span>
