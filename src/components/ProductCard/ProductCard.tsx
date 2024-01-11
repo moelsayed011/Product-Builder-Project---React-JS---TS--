@@ -7,13 +7,23 @@ import { CircleColor } from '../UI/CircleColor';
 import { IProduct } from '../interfaces'
 interface IProps {
 product : IProduct;
+setProductEdit:(product : IProduct) => void;
+    openEditModal : () => void
 }
 
 
-export const ProductCard = ({product}:IProps) => {
+export const ProductCard = ({product,setProductEdit,  openEditModal }:IProps) => {
     const { description, title, imageURL, price, colors } = product
 
     const productCircleColor = colors.map((color) => <CircleColor key={color} color={color}/>)
+
+
+
+
+    const onEdit =()=>{
+        setProductEdit(product)
+        openEditModal()
+    }
 
 
 
@@ -32,7 +42,7 @@ export const ProductCard = ({product}:IProps) => {
                 <Image imageURL={imageURL} alt={"product_name"} className='w-10 h-10 rounded-full  object-center'/>
             </div>
                 <div className=' flex items-center justify-between space-x-2'>
-                    <Button className=' bg-indigo-600'>Edit</Button>
+                    <Button className=' bg-indigo-600' onClick={onEdit}>Edit</Button>
                     <Button className=' bg-red-700 '>Delete</Button>
                 </div>
         </div>
