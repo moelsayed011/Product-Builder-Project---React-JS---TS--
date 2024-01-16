@@ -11,6 +11,7 @@ import { CircleColor } from './components/UI/CircleColor'
 import { v4 as uuid } from "uuid";
 import Select from './components/UI/Select'
 import { TproductType } from './types'
+import toast, { Toaster } from 'react-hot-toast';
 
 
 
@@ -119,7 +120,15 @@ function App() {
     setProduct(defaultProductObj)
     setTempColor([])
     closeModal()
-    console.log("Data Aready Sending.....")
+    toast('Product has been Adding successfully!', {
+      icon: '👏',
+      style: {
+        color: "white",
+        backgroundColor: "#4F46E5"
+      },
+
+    })
+
   }
 
   const onCancel = () => {    
@@ -181,6 +190,14 @@ function App() {
     setProduct(defaultProductObj)
     setTempColor([])
     closeEditModal()
+    toast('Product has been Updataing successfully!', {
+      icon: '👏',
+      style: {
+        color: "white",
+        backgroundColor: "#4F46E5"
+      },
+
+    })
   }
 
  
@@ -250,7 +267,15 @@ function App() {
   const removeProductHandler = () =>{
     const filter = products.filter(product => product.id !== productEdit.id)
     setProducts(filter);
-    closeConfirmModal()
+    closeConfirmModal();
+    toast('Product has been deleted successfully!',{
+      icon: '👏', 
+      style: {
+        color : "white",
+        backgroundColor:"#C2344D"
+      },
+
+    })
 
   }
 
@@ -352,6 +377,8 @@ function App() {
         </div>
       </Modal>
 
+
+      <Toaster />
     </main>
   )
 }
