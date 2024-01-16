@@ -9,11 +9,13 @@ interface IProps {
 product : IProduct;
 setProductEdit:(product : IProduct) => void;
     openEditModal : () => void
+    idx :number
+    setProductEditIdx : (value: number) => void
 }
 
 
-export const ProductCard = ({product,setProductEdit,  openEditModal }:IProps) => {
-    const { description, title, imageURL, price, colors } = product
+export const ProductCard = ({ product, setProductEdit, openEditModal, setProductEditIdx , idx}:IProps) => {
+    const { description, title, imageURL, price, colors, category } = product
 
     const productCircleColor = colors.map((color) => <CircleColor key={color} color={color}/>)
 
@@ -23,6 +25,7 @@ export const ProductCard = ({product,setProductEdit,  openEditModal }:IProps) =>
     const onEdit =()=>{
         setProductEdit(product)
         openEditModal()
+        setProductEditIdx(idx)
     }
 
 
@@ -34,12 +37,20 @@ export const ProductCard = ({product,setProductEdit,  openEditModal }:IProps) =>
             <p>
                 {textSlice(description)}
             </p> 
+
+
             <div className='flex space-x-2 items-center' >
-                {productCircleColor}
+                {colors.length ? productCircleColor : <p className="min-h-[20px]">Not available colors!</p>}
             </div>
+
+
+
             <div  className='flex justify-between items-center'>
-                <span>${price}</span>
-                <Image imageURL={imageURL} alt={"product_name"} className='w-10 h-10 rounded-full  object-center'/>
+                <span className='text-lg text-indigo-600 font-semibold'>${price}</span>
+                <div className="flex items-center space-x-2">
+                    <span className="text-xs font-semibold">{category.name}</span>
+                    <Image imageURL={category.imageURL} alt={category.name} className="w-10 h-10 rounded-full object-bottom" />
+                </div>
             </div>
                 <div className=' flex items-center justify-between space-x-2'>
                     <Button className=' bg-indigo-600' onClick={onEdit}>Edit</Button>

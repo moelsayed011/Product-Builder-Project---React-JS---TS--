@@ -5,7 +5,7 @@ import { categories } from '../data'
 import { ICategory } from '../interfaces'
 
 interface IProps {
-    selected: ICategory;
+    selected: { name: string, imageURL: string} ;
     setSelected: (category:ICategory) => void;
 }
 
@@ -16,7 +16,10 @@ function classNames(...classes: string[]) {
 
         const Select = ({selected , setSelected} : IProps) =>{
     return (
-        <Listbox value={selected} onChange={setSelected}>
+        <Listbox value={selected} 
+
+        // onChange={value => console.log(value)}
+        onChange={setSelected}>
             {({ open }) => (
                 <>
                     <Listbox.Label className="block text-sm font-medium leading-6 text-gray-900">Category</Listbox.Label>

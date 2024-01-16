@@ -45,12 +45,12 @@ function App() {
   const [tempColor, setTempColor] = useState<string[]>([])
 
   const[productEdit , setProductEdit] = useState<IProduct>(defaultProductObj)
+  const[productEditIdx , setProductEditIdx] = useState<number>(0)
 
 
   const [isOpen, setIsOpen] = useState(false)
 
   const [isOpenEdit, setIsOpenEdit] = useState(false)
-
 
 
 
@@ -113,8 +113,7 @@ function App() {
     console.log("Data Aready Sending.....")
   }
 
-  const onCancel = () => {
-    console.log("Close")
+  const onCancel = () => {    
     setProduct(defaultProductObj)
     closeModal()
   }
@@ -145,7 +144,7 @@ function App() {
   const onSubmitEditHandler = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
-    const { title, description, price, imageURL } = product
+    const { title, description, price, imageURL } = productEdit
     const errors = productValidation({
       title,
       description,
@@ -161,10 +160,18 @@ function App() {
 
     // Add new product 
     setProducts(prev => [ {...product ,id: uuid() ,colors: tempColor , category: selected} , ...prev ])
+
+
+    const updata = [...products]
+    updata[productEditIdx] = {...productEdit , colors: tempColor.concat(productEdit.colors) }
+    console.log(productEdit)
+    
+    setProducts(updata)
+
+
     setProduct(defaultProductObj)
     setTempColor([])
-    closeModal()
-    console.log("Data Aready Sending.....")
+    closeEditModal()
   }
 
  
@@ -178,8 +185,11 @@ function App() {
 
 
 
-  const renderProduct = products.map(product => <ProductCard openEditModal={openEditModal}
-        setProductEdit={setProductEdit} key={product.id} product={product} />)
+  const renderProduct = products.map((product , idx) => <ProductCard 
+  idx={idx}
+    setProductEditIdx={setProductEditIdx}
+    openEditModal={openEditModal}
+    setProductEdit={setProductEdit} key={product.id} product={product} />)
 
 
 
@@ -211,6 +221,12 @@ function App() {
         setTempColor(prev => prev.filter(item => item != color))
         return;
       }
+
+      if (productEdit.colors.includes(color)) {
+        setTempColor(prev => prev.filter(item => item != color))
+        return;
+      }
+
       setTempColor((prev) => [...prev, color])
     }} />)
 
@@ -219,7 +235,7 @@ function App() {
 
 
     <main className='container mx-auto'>
-      <Button className=' bg-indigo-700 w-full' onClick={openModal}>add</Button>
+      <Button className='block bg-indigo-700 hover:bg-indigo-800 mx-auto my-10 px-10 font-medium' onClick={openModal}>Add New Product</Button>
 
 
 
@@ -270,20 +286,22 @@ function App() {
           {renderProductEditWithErrorMsg("imageURL", "Product imageURL", "imageURL")}
           {renderProductEditWithErrorMsg("price", "Product Price", "price")}
 
-          {/* {renderFormInputsList}
+          {/* {/* {renderFormInputsList} */}
 
           <div className='flex space-x-2 items-center' >
             {productCircleColor}
           </div>
 
           <div className='flex space-x-2 flex-wrap items-center'>
-            {tempColor.map((color) =>
-              <span className='p-1 mb-2 text-sm text-white rounded-md cursor-pointer' style={{ backgroundColor: color }}>{color}</span>
+            {tempColor.concat(productEdit.colors).map((color,idx) =>
+              <span key={idx}  className='p-1 mb-2 text-sm text-white rounded-md cursor-pointer' 
+              style={{ backgroundColor: color }}>{color}</span>
             )}
           </div>
 
 
-          <Select selected={selected} setSelected={setSelected} /> */}
+          <Select selected={productEdit.category}
+           setSelected={value => setProductEdit({ ...productEdit , category : value})} /> 
 
 
           <div className='flex items-center space-x-3 '>
