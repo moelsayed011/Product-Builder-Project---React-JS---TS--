@@ -11,10 +11,11 @@ setProductEdit:(product : IProduct) => void;
     openEditModal : () => void
     idx :number
     setProductEditIdx : (value: number) => void
+    openConfirmModal: ( ) => void
 }
 
 
-export const ProductCard = ({ product, setProductEdit, openEditModal, setProductEditIdx , idx}:IProps) => {
+export const ProductCard = ({ product, setProductEdit, openEditModal, setProductEditIdx, idx , openConfirmModal }:IProps) => {
     const { description, title, imageURL, price, colors, category } = product
 
     const productCircleColor = colors.map((color) => <CircleColor key={color} color={color}/>)
@@ -28,7 +29,10 @@ export const ProductCard = ({ product, setProductEdit, openEditModal, setProduct
         setProductEditIdx(idx)
     }
 
-
+    const removeProduct =() => {
+        setProductEdit(product)
+        openConfirmModal()
+    }
 
     return<>
         <div className="max-w-sm md:max-w-lg mx-auto md:mx-0 border rounded-md p-2 flex flex-col space-y-3" >
@@ -54,7 +58,7 @@ export const ProductCard = ({ product, setProductEdit, openEditModal, setProduct
             </div>
                 <div className=' flex items-center justify-between space-x-2'>
                     <Button className=' bg-indigo-600' onClick={onEdit}>Edit</Button>
-                    <Button className=' bg-red-700 '>Delete</Button>
+                    <Button className=' bg-red-700 ' onClick={removeProduct}>Delete</Button>
                 </div>
         </div>
     </>

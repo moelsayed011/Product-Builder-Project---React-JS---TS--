@@ -49,8 +49,9 @@ function App() {
 
 
   const [isOpen, setIsOpen] = useState(false)
-
   const [isOpenEdit, setIsOpenEdit] = useState(false)
+  const [isOpenConfirmModal, setIsOpenConfirmModal] = useState(false);
+  
 
 
 
@@ -64,6 +65,14 @@ function App() {
 
 
   /* ------- HANDEL MODAL ------- */
+
+  function closeConfirmModal() {
+    setIsOpenConfirmModal(false)
+  }
+
+  function openConfirmModal() {
+    setIsOpenConfirmModal(true)
+  }
 
   // {====>>>>> for Add product  <<<<<=====}
   function closeModal() {
@@ -181,15 +190,21 @@ function App() {
     closeEditModal()
   }
 
+
+
+
   /* ------- RENDER ------- */
 
-
+  
 
   const renderProduct = products.map((product , idx) => <ProductCard 
   idx={idx}
     setProductEditIdx={setProductEditIdx}
     openEditModal={openEditModal}
-    setProductEdit={setProductEdit} key={product.id} product={product} />)
+    setProductEdit={setProductEdit} 
+    key={product.id} 
+    product={product}
+    openConfirmModal={openConfirmModal}/>)
 
 
 
@@ -229,6 +244,15 @@ function App() {
 
       setTempColor((prev) => [...prev, color])
     }} />)
+
+
+
+  const removeProductHandler = () =>{
+    const filter = products.filter(product => product.id !== productEdit.id)
+    setProducts(filter);
+    closeConfirmModal()
+
+  }
 
   return (
 
@@ -310,6 +334,22 @@ function App() {
           </div>
 
         </form>
+      </Modal>
+
+
+      {/* Delete product */}
+      <Modal isOpen={isOpenConfirmModal} closeModal={closeConfirmModal} 
+        title="Are you sure you want to remove this Product from your Store?"
+        description ="Deleting this product will remove it permanently from your inventory. Any associated data, sales history, and other related information will also be deleted. Please make sure this is the intended action.">
+
+          <div className="flex items-center space-x-3">
+          <Button className="bg-[#c2344d] hover:bg-red-800" onClick={removeProductHandler}>
+            Yes, remove
+          </Button>
+          <Button type="button" className="bg-[#f5f5fa] hover:bg-gray-300 !text-black" onClick={closeConfirmModal}>
+            Cancel
+          </Button>
+        </div>
       </Modal>
 
     </main>
